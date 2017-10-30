@@ -1,0 +1,24 @@
+---
+- name: make work dir
+  file:
+	path: "{{ phalcon_work_dir }}"
+	state: directory
+
+- name: Download phalcon source tar.gz
+  get_url:
+    url: "https://github.com/phalcon/cphalcon/archive/phalcon-v{{ phalcon_version }}.tar.gz"
+    dest: "{{ phalcon_work_dir }}/"
+    force: yes
+
+- name: Unarchive
+  unarchive:
+    src: "{{ phalcon_work_dir }}/phalcon-v{{ phalcon_version }}.tar.gz"
+    dest: "{{ phalcon_work_dir }}"
+    remote_src: yes
+  # command: tar zxvf /usr/local/src/phalcon-v1.3.2.tar.gz chdir=/usr/local/src
+
+- name: Install phalcon shared object.
+  command: ./install chdir={{ phalcon_work_dir }}/cphalcon-phalcon-v1.3.2/build creates=/usr/lib64/php/modules/phalcon.so
+
+- name: Set phalcon.ini
+  template: src=phalcon.ini.j2 dest=/etc/php.d/phalcon.ini
