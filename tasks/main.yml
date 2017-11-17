@@ -1,8 +1,8 @@
 ---
 - name: "make work dir : {{ phalcon_work_dir }}"
   file:
-	path: "{{ phalcon_work_dir }}"
-	state: directory
+    path: "{{ phalcon_work_dir }}"
+    state: directory
 
 - name: "Download source and unarchive tar (version {{ phalcon_version }})"
   unarchive:
